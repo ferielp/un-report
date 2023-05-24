@@ -1,1 +1,2 @@
 We plotted Life Expectancy by Continents, and separately by Time
+Each point represents a Country
