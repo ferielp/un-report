@@ -1,0 +1,52 @@
+---
+title: "UN Report Relationship GDP LifeExpectancy"
+author: "Feriel P"
+date: "2023-05-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#include=FALSE means this chunk of code and its output will not be included in the report
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, include=FALSE} 
+library(tidyverse)
+```
+This report was prepared to the attention of the United Nations. It analyzes the relationship between a country's GDP, its life expectancy and CO2 emissions. Our goal is to determine to what degree a country's economic strength or weakness may be related to its public health status and impact on climate pollution. We hypothesize that both life expectancy and CO2 emissions increase with a country's GDP.
+```{r load_data, include=FALSE}
+gapminder_1997 <- read_csv("data/gapminder_1997.csv")
+```
+```{r gdp_lifeExp_1997, echo=FALSE}
+#echo=FALSE means that this chunk of code will not be shown in the report, but the output from this chunk will be in the report
+library(ggplot2)
+ggplot(data = gapminder_1997) +
+  aes(x=gdpPercap, y=lifeExp, color = continent, size = pop/1000000) +
+  geom_point() +
+  labs(x= "GDP per capita", y="Life expectancy", title = "Do people in wealthy countries live longer?",
+  size = "Population (in millions)", color = "Continents")
+```
+```{r, include=FALSE}
+nCountries <- gapminder_1997 %>% select(country) %>%  n_distinct()
+minGDP <- gapminder_1997 %>% summarize(round(min(gdpPercap))) %>% pull()
+maxGDP <- gapminder_1997 %>% summarize(round(max(gdpPercap))) %>% pull()
+#If pull() wasn't used we would get a tibble assigned to the variable, not the value
+```
+
+The plot above shows the relationship between GDP per capita and life expectancy for a total of `r nCountries` distinct countries. For this set of countries, economic wealth ranged from a minimum of USD `r minGDP` to a maximum of USD `r maxGDP` per capita.
+
+| HEADER 1 | HEADER 2 |
+|----------|----------|
+|row 1, column 1 |row 1, column 2 |
+|row 2, column 1 |row 2, column 2 |
+
+
+```{r kable_table, echo=FALSE}
+library(knitr)
+gapminder_1997 %>% 
+  filter(continent == "Oceania") %>% 
+  kable()
+
+```
+
+
